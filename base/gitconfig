@@ -1,0 +1,40 @@
+[user]
+    email = mediocregopher@gmail.com
+    name = Brian Picciano
+
+[push]
+    default = simple
+
+[alias]
+    #Shows diff in log
+    ll = log --stat --abbrev-commit
+
+    #Show all aliases
+    alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\t=> \\2/' | sort
+
+    #Full sync of local database
+    sync = fetch -pv --all
+
+    #Fightin' words
+    punch = push
+    kick = commit -a -m
+    lug = log --color --graph --date=short --pretty=format:'%Cgreen%cd (%cr)%Creset %C(bold blue)%an%Creset %Cred%h%Creset -%C(yellow)%d%Creset %s' --abbrev-commit
+    diss = !git --no-pager diff
+    fight = fetch
+    stab = status
+    mush = merge
+    attack = add
+    choke = checkout
+    clock = clone
+    purr = pull --rebase
+
+    # gerrit pull request
+    gpr = "!a() { if [ -n \"$pa\" ]; then pa=\"$pa,$1\"; else pa=\"$1\"; fi; }; f() { target=`git config branch.$(git name-rev --name-only HEAD).merge | sed -e 's@refs/heads/@refs/for/@'`; if [ -z \"$target\" ]; then echo -n 'target branch: '; read t; git branch -u origin/$t; target=\"refs/for/$t\"; fi; p=\"HEAD:$target\"; pa=\"\"; for v in \"$@\"; do if [ \"$v\" == \"submit\" ]; then a \"submit\"; elif [ \"$v\" == \"ready\" ]; then a \"ready\"; elif [ \"$v\" == \"wip\" ]; then a \"wip\"; elif [[ $v == topic=* ]]; then a $v; else a \"r=$v\"; fi; done; if [ -n \"$pa\" ]; then p=\"${p}%${pa}\"; fi; git push origin $p; }; f"
+    install-hooks = "!f() { gitdir=$(git rev-parse --git-dir) ; curl -sLo \"$gitdir/hooks/commit-msg\" \"https://gerrit.levenlabs.com/tools/hooks/commit-msg\" ; chmod +x $gitdir/hooks/commit-msg; }; f"
+
+[color]
+    branch = auto
+    diff = auto
+    status = auto
+
+

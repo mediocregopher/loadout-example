@@ -1,0 +1,88 @@
+alias grep='grep --color=auto'
+alias lal='ls -la'
+alias vim=nvim
+alias rd=/home/mediocregopher/src/loadout/remote-dev.sh
+
+alias src='cd ~/src/'
+alias s='src && ls'
+alias gosrc='cd ~/src/go/src'
+alias gs='gosrc && ls'
+
+alias kbp='cd /keybase/private/mediocregopher'
+
+alias t='tmuxn'
+alias tmuxn='tmux new -s'
+alias ta='tmuxa'
+alias tmuxa='tmux attach -d -t'
+alias tls='tmux ls'
+
+alias cb='xsel -bi; xsel -bo'
+alias gobin='curl -F "gob=<-" http://gobin.io/mediocregopher 2>/dev/null | head -n1 | cb'
+alias gobinr='curl -F "gob=<-" http://gobin.io/mediocregopher 2>/dev/null'
+
+alias rsyncv='rsync -av --progress'
+
+function psgrep {
+    ps aux | grep -P "[^]]$1"
+}
+
+function pskill {
+    PROCS=$(psgrep "$1")
+    echo "$PROCS"
+    echo "$PROCS" | awk '{print $2}' | xargs kill
+}
+
+function ans {
+    (
+        prev=$(pwd)
+        cd ~/src/ansible
+        source bin/activate
+        source hacking/env-setup -q
+
+        bin=ansible
+        case "$1" in
+        "playbook")
+            bin=ansible-playbook
+            shift
+            ;;
+        "console")
+            bin=ansible-console
+            shift
+            ;;
+        "vault")
+            bin=ansible-vault
+            shift
+            ;;
+        esac
+
+        cd "$prev"
+        $bin "$@"
+    )
+}
+
+# takes in a search regex and a replace string, and does a recursive
+# find/replace inside the current directory. Safe to run on repos with .git
+# folders and shit like that
+function agsed {
+    search="$1"
+    replace="$2"
+    files=$(ag "$search" -l0)
+    echo -n "$files" | xargs -0 -n1 echo
+    echo -n "$files" | xargs -0 sed -i "s/$search/$replace/g"
+}
+
+function sleeptill {
+    nowStr=$(date)
+    now="$(date -d "$nowStr" +%s)"
+    tillStr="$(date -d "$1")"
+    till="$(date -d "$tillStr" +%s)"
+    amnt=$(expr "$till" - "$now")
+    echo "now: $nowStr"
+    echo "till: $tillStr"
+    echo "amnt: $amnt"
+    sleep "$amnt"
+}
+
+function go-docker-build {
+    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo "$@"
+}

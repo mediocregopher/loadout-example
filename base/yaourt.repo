@@ -1,0 +1,6 @@
+[options]
+Architecture = auto
+
+[archlinuxfr]
+SigLevel = Never
+Server = http://repo.archlinux.fr/$arch

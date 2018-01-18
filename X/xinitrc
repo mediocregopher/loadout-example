@@ -1,0 +1,22 @@
+# map capslock to escape
+xmodmap -e "clear lock"
+xmodmap -e "keycode 66 = Escape"
+setxkbmap -option caps:escape # Not sure why I need this....
+
+# default app stuff (only needs to run once, but whatever)
+xdg-mime default chromium.desktop x-scheme-handler/http
+xdg-mime default chromium.desktop x-scheme-handler/https
+xdg-mime default chromium.desktop text/html
+
+# turn of console beep
+xset b off
+
+# Turn off powersaving (fuck the environment)
+xset -dpms
+xset s off
+
+# always set backlight to 50
+xbacklight = 50
+
+# start my window manager
+exec awesome 1>&2 2>/tmp/awesome.log
