@@ -10,7 +10,7 @@ to provide it as an example someone could learn and gain ideas from.
 # Walkthrough
 
 The underlying assumption of my loadout is that it's being run on an
-(archlinu)[https://archlinux.org] system with essentially nothing done besides
+[archlinux](https://archlinux.org) system with essentially nothing done besides
 basic installation.
 
 My loadout is primarly comprised of a set of provisioning scripts which are
